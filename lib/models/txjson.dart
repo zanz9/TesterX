@@ -1,7 +1,10 @@
+import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:testerx/hive/Type.dart';
 
 part 'txjson.g.dart';
 
+@HiveType(typeId: TxJsonType)
 @JsonSerializable()
 class TxJson {
   TxJson(
@@ -9,7 +12,9 @@ class TxJson {
     this.questions,
   );
 
+  @HiveField(0)
   bool multiple;
+  @HiveField(1)
   List<Questions> questions;
 
   factory TxJson.fromJson(Map<String, dynamic> json) => _$TxJsonFromJson(json);
@@ -26,6 +31,7 @@ class TxJson {
   }
 }
 
+@HiveType(typeId: QuestionsType)
 @JsonSerializable()
 class Questions {
   Questions(
@@ -33,9 +39,11 @@ class Questions {
     this.rights,
     this.answers,
   );
-
+  @HiveField(0)
   List<String?> title;
+  @HiveField(1)
   List<String?> rights;
+  @HiveField(2)
   List<String?> answers;
 
   factory Questions.fromJson(Map<String, dynamic> json) =>

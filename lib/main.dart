@@ -1,9 +1,18 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:testerx/models/index.dart';
 
 import 'pages/index.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(QuestionsAdapter());
+  Hive.registerAdapter(TxJsonAdapter());
+  Hive.registerAdapter(RightListAdapter());
+  Hive.registerAdapter(CoreAdapter());
+  var box = await Hive.openBox<Core>('coreBox');
+
   runApp(const MyApp());
 }
 

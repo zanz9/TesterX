@@ -1,5 +1,6 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:convert';
 import 'package:testerx/models/index.dart';
 import 'package:testerx/pages/test/ui/bottom_navigation.dart';
@@ -190,6 +191,8 @@ class _Temp2State extends State<_Temp2> {
           actions: [
             TextButton(
               onPressed: () {
+                var box = Hive.box<Core>('coreBox');
+                box.add(core);
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/', (Route<dynamic> route) => false,
                     arguments: {
