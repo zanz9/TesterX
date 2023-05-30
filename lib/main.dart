@@ -11,7 +11,13 @@ void main() async {
   Hive.registerAdapter(TxJsonAdapter());
   Hive.registerAdapter(RightListAdapter());
   Hive.registerAdapter(CoreAdapter());
-  var box = await Hive.openBox<Core>('coreBox');
+  var box1 = await Hive.openBox<Core>('coreBox');
+  var box2 = await Hive.openBox('settingsBox');
+  if (box2.isEmpty) {
+    box2.putAll({
+      'maxMode': false,
+    });
+  }
 
   runApp(const MyApp());
 }
