@@ -1,7 +1,9 @@
-import 'package:card_swiper/card_swiper.dart';
-import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:convert';
+import 'package:flutter/material.dart';
+
+import 'package:card_swiper/card_swiper.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:testerx/models/index.dart';
 import 'package:testerx/pages/test/ui/bottom_navigation.dart';
 
@@ -193,6 +195,7 @@ class _Temp2State extends State<_Temp2> {
               onPressed: () {
                 var box = Hive.box<Core>('coreBox');
                 box.add(core);
+                // var box2 = Hive.box(BoxNames.lastTestBox);
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/', (Route<dynamic> route) => false,
                     arguments: {

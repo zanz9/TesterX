@@ -1,31 +1,27 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:testerx/models/index.dart';
+import 'package:testerx/hive/BoxNames.dart';
+import 'package:testerx/hive/initial.dart';
 
 import 'pages/index.dart';
 
 void main() async {
-  await Hive.initFlutter();
-  Hive.registerAdapter(QuestionsAdapter());
-  Hive.registerAdapter(TxJsonAdapter());
-  Hive.registerAdapter(RightListAdapter());
-  Hive.registerAdapter(CoreAdapter());
-  var box1 = await Hive.openBox<Core>('coreBox');
-  var box2 = await Hive.openBox('settingsBox');
-  if (box2.isEmpty) {
-    box2.putAll({
-      'maxMode': false,
-    });
-  }
-
+  await hiveInitial();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
+    var box2 = Hive.box(BoxNames.settingsBox);
+    if (box2.isEmpty) {
+      box2.putAll({
+        BoxNames.maxModeField: false,
+      });
+    }
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(),

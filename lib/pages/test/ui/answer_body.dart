@@ -76,10 +76,10 @@ class _AnswerButtonState extends State<AnswerButton> {
                 setState(() {
                   widget.core.rightList.add(
                     RightList(
-                      index: widget.index,
-                      isTrue: widget.question.rights.contains(element),
-                      title: widget.question.title[0],
-                      selected: [i],
+                      widget.index,
+                      widget.question.rights.contains(element),
+                      widget.question.title[0],
+                      [i],
                     ),
                   );
                 });

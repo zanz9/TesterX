@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:testerx/hive/BoxNames.dart';
 import 'package:testerx/models/index.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -7,33 +8,28 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var box = Hive.box<Core>('coreBox');
+    var box = Hive.box<Core>(BoxNames.coreBox);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Настройки'),
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            // box.add(Core(
-            //   'quizTitle',
-            //   TxJson(false, [
-            //     Questions(
-            //       ['title'],
-            //       ['rights'],
-            //       ['answers'],
-            //     )
-            //   ]),
-            //   [
-            //     RightList(index: 1, isTrue: true, selected: [1], title: 'asd')
-            //   ],
-            //   true,
-            // ));
-            print(box.values);
-          },
-          child: const Text('В разработке'),
-        ),
+      body: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              box.clear();
+            },
+            child: const Text('Стереть тесты'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              box.clear();
+              Hive.box(BoxNames.settingsBox).clear();
+            },
+            child: const Text('Стереть ВСЁ'),
+          ),
+        ],
       ),
     );
   }

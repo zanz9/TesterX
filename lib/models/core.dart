@@ -25,11 +25,7 @@ class Core {
 @HiveType(typeId: RightListType)
 @JsonSerializable()
 class RightList {
-  RightList(
-      {required this.index,
-      required this.isTrue,
-      required this.title,
-      required this.selected});
+  RightList(this.index, this.isTrue, this.title, this.selected);
   @HiveField(0)
   int? index;
   @HiveField(1)

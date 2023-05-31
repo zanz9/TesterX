@@ -60,10 +60,10 @@ class RightListAdapter extends TypeAdapter<RightList> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return RightList(
-      index: fields[0] as int?,
-      isTrue: fields[1] as bool?,
-      title: fields[2] as String?,
-      selected: (fields[3] as List?)?.cast<int>(),
+      fields[0] as int?,
+      fields[1] as bool?,
+      fields[2] as String?,
+      (fields[3] as List?)?.cast<int>(),
     );
   }
 
@@ -114,11 +114,10 @@ Map<String, dynamic> _$CoreToJson(Core instance) => <String, dynamic>{
     };
 
 RightList _$RightListFromJson(Map<String, dynamic> json) => RightList(
-      index: json['index'] as int?,
-      isTrue: json['isTrue'] as bool?,
-      title: json['title'] as String?,
-      selected:
-          (json['selected'] as List<dynamic>?)?.map((e) => e as int).toList(),
+      json['index'] as int?,
+      json['isTrue'] as bool?,
+      json['title'] as String?,
+      (json['selected'] as List<dynamic>?)?.map((e) => e as int).toList(),
     );
 
 Map<String, dynamic> _$RightListToJson(RightList instance) => <String, dynamic>{
