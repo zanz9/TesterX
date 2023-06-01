@@ -27,7 +27,7 @@ class Footer extends StatelessWidget {
         lastTestBox.putAll({
           BoxNames.coreField: core,
           BoxNames.finishedField: false,
-          BoxNames.tsJsonBeforeField: core.txJson
+          BoxNames.txJsonBeforeField: core.txJson
         });
 
         Navigator.of(context).pushReplacementNamed('/test', arguments: {

@@ -5,9 +5,11 @@ class LastTestContainer extends StatelessWidget {
   const LastTestContainer({
     super.key,
     required this.core,
+    required this.icon,
   });
 
   final Core core;
+  final IconButton icon;
 
   @override
   Widget build(BuildContext context) {
@@ -30,29 +32,35 @@ class LastTestContainer extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 25),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.green,
-                boxShadow: const [
-                  BoxShadow(color: Colors.green, spreadRadius: 3),
-                ],
-              ),
-              child: Center(child: Text(corrects.length.toString())),
-            ),
-            const SizedBox(width: 20),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
               children: [
-                Text(core.quizTitle),
-                Text(
-                  '${corrects.length}/${core.txJson.questions.length} Вопросов',
+                Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.green,
+                    boxShadow: const [
+                      BoxShadow(color: Colors.green, spreadRadius: 3),
+                    ],
+                  ),
+                  child: Center(child: Text(corrects.length.toString())),
                 ),
+                const SizedBox(width: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(core.quizTitle),
+                    Text(
+                      '${corrects.length}/${core.txJson.questions.length} Вопросов',
+                    ),
+                  ],
+                )
               ],
-            )
+            ),
+            icon
           ],
         ),
       ),

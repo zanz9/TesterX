@@ -23,22 +23,18 @@ class _HomeState extends State<Home> {
   late bool finished;
 
   @override
-  void didChangeDependencies() {
-    //! Сделать новый бокс и хранить кор и финишед там, чтобы при перезапуске приложения сохранялась последняя сессия
-    final Map? args = ModalRoute.of(context)!.settings.arguments as Map?;
-    if (args != null) {
-      core = args['core'];
-      finished = args['finished'];
-    }
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    List<bool> maxMode = [core?.maxMode ?? false];
+    Box coreBox = Hive.box<ArchiveCore>(BoxNames.coreBox);
+    Box lastTestBox = Hive.box(BoxNames.lastTestBox);
 
-    Box coreBox = Hive.box<Core>(BoxNames.coreBox);
+    var settingsBox = Hive.box(BoxNames.settingsBox);
+    // ignore: prefer_is_empty
+    if (settingsBox.keys.length == 0) {
+      settingsBox.putAll({
+        BoxNames.maxModeField: false,
+      });
+    }
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -53,34 +49,39 @@ class _HomeState extends State<Home> {
                 const Header(),
                 const SizedBox(height: 50),
                 // BODY
-                if (core != null)
-                  SizedBox(
-                    height: 60,
-                    child: OutlinedButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(0)),
+                if (!lastTestBox.get(BoxNames.finishedField,
+                    defaultValue: true))
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Продолжить тест',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      LastTestContainer(
+                        core: lastTestBox.get(BoxNames.coreField),
+                        icon: IconButton(
+                          icon: Icon(Icons.arrow_forward_ios),
+                          onPressed: () {
+                            Navigator.of(context).pushReplacementNamed('/test');
+                          },
                         ),
                       ),
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed('/test', arguments: {
-                          'txJson': core!.txJson,
-                          'quizTitle': core!.quizTitle,
-                          'rightList': !finished ? core!.rightList : null,
-                          'maxMode': maxMode[0],
-                        });
-                      },
-                      child: Text(
-                          finished ? 'Пройти тест заново' : 'Продолжить тест'),
-                    ),
+                      SizedBox(height: 15),
+                    ],
                   ),
-                SizedBox(height: 15),
+
                 Row(
                   children: [
                     Text(
-                      'Последние тесты',
+                      'Законченные тесты',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -89,8 +90,20 @@ class _HomeState extends State<Home> {
                   ],
                 ),
                 SizedBox(height: 20),
-                for (Core i in coreBox.values.toList().reversed)
-                  LastTestContainer(core: i),
+                for (ArchiveCore i in coreBox.values.toList().reversed)
+                  LastTestContainer(
+                    core: i.core,
+                    icon: IconButton(
+                      icon: Icon(Icons.refresh),
+                      onPressed: () {
+                        lastTestBox.putAll({
+                          BoxNames.coreField: i.initialTxJson,
+                          BoxNames.finishedField: false,
+                        });
+                        Navigator.of(context).pushReplacementNamed('/test');
+                      },
+                    ),
+                  ),
               ],
             ),
           ),

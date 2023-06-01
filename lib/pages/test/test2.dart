@@ -51,10 +51,15 @@ class _TempState extends State<_Temp> {
         actions: [
           TextButton(
             onPressed: () {
+              var lastTestBox = Hive.box(BoxNames.lastTestBox);
+              lastTestBox.putAll({
+                BoxNames.coreField: core,
+                BoxNames.finishedField: false,
+              });
               Navigator.of(context).pushNamedAndRemoveUntil(
                 '/',
                 (Route<dynamic> route) => false,
-                arguments: {'core': core, 'finished': false},
+                // arguments: {'core': core, 'finished': false},
               );
             },
             child: const Text('Выйти'),
@@ -108,7 +113,7 @@ class _TempState extends State<_Temp> {
                     arguments: {
                       'core': Core(
                         widget.core.quizTitle,
-                        lastTestBox.get(BoxNames.tsJsonBeforeField),
+                        lastTestBox.get(BoxNames.txJsonBeforeField),
                         widget.core.rightList,
                         widget.core.maxMode,
                       ),

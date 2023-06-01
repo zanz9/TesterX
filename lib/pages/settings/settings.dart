@@ -8,24 +8,31 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var box = Hive.box<Core>(BoxNames.coreBox);
+    var coreBox = Hive.box<ArchiveCore>(BoxNames.coreBox);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Настройки'),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pushReplacementNamed('/');
+          },
+          icon: const Icon(Icons.arrow_circle_left_outlined),
+        ),
       ),
       body: Column(
         children: [
           ElevatedButton(
             onPressed: () {
-              box.clear();
+              coreBox.clear();
             },
             child: const Text('Стереть тесты'),
           ),
           ElevatedButton(
             onPressed: () {
-              box.clear();
+              coreBox.clear();
               Hive.box(BoxNames.settingsBox).clear();
+              Hive.box(BoxNames.lastTestBox).clear();
             },
             child: const Text('Стереть ВСЁ'),
           ),

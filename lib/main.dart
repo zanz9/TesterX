@@ -1,7 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:testerx/hive/BoxNames.dart';
 import 'package:testerx/hive/initial.dart';
 
 import 'pages/index.dart';
@@ -16,12 +14,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var box2 = Hive.box(BoxNames.settingsBox);
-    if (box2.isEmpty) {
-      box2.putAll({
-        BoxNames.maxModeField: false,
-      });
-    }
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(),

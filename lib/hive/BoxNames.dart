@@ -9,5 +9,5 @@ class BoxNames {
   static const lastTestBox = 'lastTestBox';
   static const coreField = 'coreField';
   static const finishedField = 'finishedField';
-  static const tsJsonBeforeField = 'tsJsonBeforeField';
+  static const txJsonBeforeField = 'txJsonBeforeField';
 }

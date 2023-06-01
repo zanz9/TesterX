@@ -92,6 +92,43 @@ class RightListAdapter extends TypeAdapter<RightList> {
           typeId == other.typeId;
 }
 
+class ArchiveCoreAdapter extends TypeAdapter<ArchiveCore> {
+  @override
+  final int typeId = 4;
+
+  @override
+  ArchiveCore read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return ArchiveCore(
+      fields[0] as Core,
+      fields[1] as TxJson,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, ArchiveCore obj) {
+    writer
+      ..writeByte(2)
+      ..writeByte(0)
+      ..write(obj.core)
+      ..writeByte(1)
+      ..write(obj.initialTxJson);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ArchiveCoreAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************

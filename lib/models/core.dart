@@ -39,3 +39,12 @@ class RightList {
       _$RightListFromJson(json);
   Map<String, dynamic> toJson() => _$RightListToJson(this);
 }
+
+@HiveType(typeId: ArchiveCoreType)
+class ArchiveCore {
+  ArchiveCore(this.core, this.initialTxJson);
+  @HiveField(0)
+  Core core;
+  @HiveField(1)
+  TxJson initialTxJson;
+}

@@ -12,8 +12,9 @@ Future hiveInitial() async {
   Hive.registerAdapter(TxJsonAdapter());
   Hive.registerAdapter(RightListAdapter());
   Hive.registerAdapter(CoreAdapter());
+  Hive.registerAdapter(ArchiveCoreAdapter());
 
-  var box1 = await Hive.openBox<Core>(BoxNames.coreBox);
+  var box1 = await Hive.openBox<ArchiveCore>(BoxNames.coreBox);
   var box2 = await Hive.openBox(BoxNames.settingsBox);
   var box3 = await Hive.openBox(BoxNames.lastTestBox);
 }

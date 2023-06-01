@@ -17,7 +17,7 @@ class Header extends StatefulWidget {
 class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
-    var settingsBox = Hive.box(BoxNames.settingsBox);
+    Box settingsBox = Hive.box(BoxNames.settingsBox);
     bool maxMode = settingsBox.get(BoxNames.maxModeField);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,7 +46,7 @@ class _HeaderState extends State<Header> {
             const SizedBox(width: 15),
             IconButton(
               onPressed: () => {
-                Navigator.of(context).pushNamed('/settings'),
+                Navigator.of(context).pushReplacementNamed('/settings'),
               },
               icon: const SettingsIcon(),
             ),
