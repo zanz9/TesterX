@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:card_swiper/card_swiper.dart';
@@ -16,7 +18,8 @@ class TestPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Box lastTestBox = Hive.box(BoxNames.lastTestBox);
     Core core = lastTestBox.get(BoxNames.coreField);
-    // TxJson txJsonBefore = TxJson.fromJson(jsonDecode(jsonEncode(core.txJson)));
+    TxJson initialTxJson = TxJson.fromJson(jsonDecode(jsonEncode(core.txJson)));
+    lastTestBox.put(BoxNames.txJsonBeforeField, initialTxJson);
     if (core.rightList.isEmpty) {
       core.txJson.questions.shuffle(); //* random
       if (!core.maxMode) {
@@ -27,16 +30,16 @@ class TestPage extends StatelessWidget {
       }
     }
 
-    return _Temp(core: core);
+    return _Temp(archiveCore: ArchiveCore(core, initialTxJson));
   }
 }
 
 class _Temp extends StatefulWidget {
   const _Temp({
-    required this.core,
+    required this.archiveCore,
   });
 
-  final Core core;
+  final ArchiveCore archiveCore;
 
   @override
   State<_Temp> createState() => _TempState();
@@ -59,7 +62,6 @@ class _TempState extends State<_Temp> {
               Navigator.of(context).pushNamedAndRemoveUntil(
                 '/',
                 (Route<dynamic> route) => false,
-                // arguments: {'core': core, 'finished': false},
               );
             },
             child: const Text('Выйти'),
@@ -76,6 +78,7 @@ class _TempState extends State<_Temp> {
     SwiperController swiperController = SwiperController();
     ScrollController scrollController = ScrollController();
     int keyCount = 0;
+    Core core = widget.archiveCore.core;
 
     updateState({VoidCallback? callback}) {
       if (callback != null) {
@@ -85,9 +88,9 @@ class _TempState extends State<_Temp> {
     }
 
     finishTest() {
-      var corrects = [...widget.core.rightList];
+      var corrects = [...core.rightList];
       corrects.removeWhere((element) => element?.isTrue == false);
-      var wrongs = [...widget.core.rightList];
+      var wrongs = [...core.rightList];
       wrongs.removeWhere((element) => element?.isTrue == true);
       showDialog(
         context: context,
@@ -96,29 +99,16 @@ class _TempState extends State<_Temp> {
           content: Text('''
 Правильно - ${corrects.length}
 Неправильно - ${wrongs.length}
-Всего - ${widget.core.rightList.length}
+Всего - ${core.rightList.length}
           '''),
           actions: [
             TextButton(
-              onPressed: () {
-                var box = Hive.box<Core>('coreBox');
-                box.add(widget.core);
-                var lastTestBox = Hive.box(BoxNames.lastTestBox);
-                lastTestBox.putAll({
-                  BoxNames.coreField: widget.core,
-                  BoxNames.finishedField: true,
-                });
+              onPressed: () async {
+                var coreBox = Hive.box<ArchiveCore>('coreBox');
+                coreBox.add(widget.archiveCore);
+                await Hive.box(BoxNames.lastTestBox).clear();
                 Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/', (Route<dynamic> route) => false,
-                    arguments: {
-                      'core': Core(
-                        widget.core.quizTitle,
-                        lastTestBox.get(BoxNames.txJsonBeforeField),
-                        widget.core.rightList,
-                        widget.core.maxMode,
-                      ),
-                      'finished': true
-                    }); //! DELETE
+                    '/', (Route<dynamic> route) => false);
               },
               child: const Text('Выйти из теста'),
             ),
@@ -146,10 +136,10 @@ class _TempState extends State<_Temp> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.core.quizTitle),
+          title: Text(core.quizTitle),
           leading: IconButton(
             onPressed: () {
-              willPop(widget.core);
+              willPop(core);
             },
             icon: const Icon(Icons.arrow_circle_left_outlined),
           ),
@@ -164,27 +154,27 @@ class _TempState extends State<_Temp> {
         ),
         bottomNavigationBar: BottomNavigation(
           size: size,
-          core: widget.core,
+          core: core,
           swiperController: swiperController,
           scrollController: scrollController,
         ),
         body: WillPopScope(
           onWillPop: () {
-            return willPop(widget.core);
+            return willPop(core);
           },
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
             child: Swiper(
               curve: Curves.ease,
               controller: swiperController,
-              itemCount: widget.core.txJson.questions.length,
+              itemCount: core.txJson.questions.length,
               itemBuilder: (context, index) => QuestionBody(
-                question: widget.core.txJson.questions[index],
+                question: core.txJson.questions[index],
                 index: index,
-                length: widget.core.txJson.questions.length,
+                length: core.txJson.questions.length,
                 swiperController: swiperController,
                 scrollController: scrollController,
-                core: widget.core,
+                core: core,
                 updateState: updateState,
               ),
             ),

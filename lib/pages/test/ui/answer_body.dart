@@ -1,6 +1,10 @@
-import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:testerx/hive/BoxNames.dart';
+
 import 'package:testerx/models/index.dart';
 import 'package:testerx/pages/test/utils/is_right.dart';
 
@@ -73,15 +77,20 @@ class _AnswerButtonState extends State<AnswerButton> {
             ),
             onPressed: () {
               if (isRightNull == null) {
+                Box lastTestBox = Hive.box(BoxNames.lastTestBox);
+                Core core = lastTestBox.get(BoxNames.coreField);
+
+                var r = RightList(
+                  widget.index,
+                  widget.question.rights.contains(element),
+                  widget.question.title[0],
+                  [i],
+                );
+
                 setState(() {
-                  widget.core.rightList.add(
-                    RightList(
-                      widget.index,
-                      widget.question.rights.contains(element),
-                      widget.question.title[0],
-                      [i],
-                    ),
-                  );
+                  core.rightList.add(r);
+                  lastTestBox.put(BoxNames.coreField, core);
+                  // widget.core.rightList.add(r);
                 });
                 widget.updateState(callback: () {
                   double scroll = widget.scrollController.position.pixels + 63;

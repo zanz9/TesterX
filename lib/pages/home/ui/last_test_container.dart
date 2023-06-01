@@ -46,15 +46,26 @@ class LastTestContainer extends StatelessWidget {
                       BoxShadow(color: Colors.green, spreadRadius: 3),
                     ],
                   ),
-                  child: Center(child: Text(corrects.length.toString())),
+                  child: Center(
+                      child: Text(
+                    corrects.length.toString(),
+                    style: const TextStyle(fontSize: 18),
+                  )),
                 ),
                 const SizedBox(width: 20),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(core.quizTitle),
                     Text(
-                      '${corrects.length}/${core.txJson.questions.length} Вопросов',
+                      core.quizTitle,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      '${core.rightList.length}/${core.txJson.questions.length} Вопросов',
+                      style: TextStyle(color: Colors.grey[400]),
                     ),
                   ],
                 )

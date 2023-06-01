@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:testerx/hive/BoxNames.dart';
@@ -29,8 +27,7 @@ class _HomeState extends State<Home> {
     Box lastTestBox = Hive.box(BoxNames.lastTestBox);
 
     var settingsBox = Hive.box(BoxNames.settingsBox);
-    // ignore: prefer_is_empty
-    if (settingsBox.keys.length == 0) {
+    if (settingsBox.keys.isEmpty) {
       settingsBox.putAll({
         BoxNames.maxModeField: false,
       });
@@ -53,7 +50,7 @@ class _HomeState extends State<Home> {
                     defaultValue: true))
                   Column(
                     children: [
-                      Row(
+                      const Row(
                         children: [
                           Text(
                             'Продолжить тест',
@@ -64,21 +61,21 @@ class _HomeState extends State<Home> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       LastTestContainer(
                         core: lastTestBox.get(BoxNames.coreField),
                         icon: IconButton(
-                          icon: Icon(Icons.arrow_forward_ios),
+                          icon: const Icon(Icons.arrow_forward_ios),
                           onPressed: () {
                             Navigator.of(context).pushReplacementNamed('/test');
                           },
                         ),
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                     ],
                   ),
 
-                Row(
+                const Row(
                   children: [
                     Text(
                       'Законченные тесты',
@@ -89,18 +86,26 @@ class _HomeState extends State<Home> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 for (ArchiveCore i in coreBox.values.toList().reversed)
                   LastTestContainer(
                     core: i.core,
                     icon: IconButton(
-                      icon: Icon(Icons.refresh),
+                      icon: const Icon(Icons.refresh),
                       onPressed: () {
+                        Box settingsBox = Hive.box(BoxNames.settingsBox);
+                        bool maxMode = settingsBox.get(BoxNames.maxModeField);
                         lastTestBox.putAll({
-                          BoxNames.coreField: i.initialTxJson,
+                          BoxNames.coreField: Core(
+                            i.core.quizTitle,
+                            i.initialTxJson,
+                            [],
+                            maxMode,
+                          ),
                           BoxNames.finishedField: false,
+                        }).then((value) {
+                          Navigator.of(context).pushReplacementNamed('/test');
                         });
-                        Navigator.of(context).pushReplacementNamed('/test');
                       },
                     ),
                   ),

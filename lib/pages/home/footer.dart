@@ -27,15 +27,9 @@ class Footer extends StatelessWidget {
         lastTestBox.putAll({
           BoxNames.coreField: core,
           BoxNames.finishedField: false,
-          BoxNames.txJsonBeforeField: core.txJson
         });
 
-        Navigator.of(context).pushReplacementNamed('/test', arguments: {
-          'txJson': value[0],
-          'quizTitle': value[1],
-          'rightList': null,
-          'maxMode': maxMode,
-        });
+        Navigator.of(context).pushReplacementNamed('/test');
       });
     }
 
