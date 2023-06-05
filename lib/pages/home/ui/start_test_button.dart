@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class BottomButton extends StatelessWidget {
   const BottomButton({
@@ -31,7 +32,12 @@ class BottomButton extends StatelessWidget {
             const SizedBox(),
             Text(
               text,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                  fontSize:
+                      (ResponsiveBreakpoints.of(context).largerThan(MOBILE))
+                          ? 24
+                          : 20,
+                  fontWeight: FontWeight.w600),
             ),
             CircleAvatar(
               radius: 20,

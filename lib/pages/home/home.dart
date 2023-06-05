@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:testerx/hive/BoxNames.dart';
 import 'package:testerx/models/index.dart';
 
@@ -38,7 +39,9 @@ class _HomeState extends State<Home> {
           padding: EdgeInsets.only(
             right: size.width * 0.05,
             left: size.width * 0.05,
-            top: size.width * 0.08,
+            top: (ResponsiveBreakpoints.of(context).largerThan(TABLET))
+                ? 60
+                : size.width * 0.08,
           ),
           child: SingleChildScrollView(
             child: Column(

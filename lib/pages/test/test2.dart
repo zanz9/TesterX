@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:card_swiper/card_swiper.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:keymap/keymap.dart';
 
 import 'package:testerx/hive/BoxNames.dart';
 import 'package:testerx/models/index.dart';
@@ -16,6 +18,8 @@ class TestPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SwiperController swiperController = SwiperController();
+    ScrollController scrollController = ScrollController();
     Box lastTestBox = Hive.box(BoxNames.lastTestBox);
     Core core = lastTestBox.get(BoxNames.coreField);
     TxJson initialTxJson = TxJson.fromJson(jsonDecode(jsonEncode(core.txJson)));
@@ -30,17 +34,24 @@ class TestPage extends StatelessWidget {
       }
     }
 
-    return _Temp(archiveCore: ArchiveCore(core, initialTxJson));
+    return _Temp(
+      archiveCore: ArchiveCore(core, initialTxJson),
+      swiperController: swiperController,
+      scrollController: scrollController,
+    );
   }
 }
 
 class _Temp extends StatefulWidget {
   const _Temp({
     required this.archiveCore,
+    required this.swiperController,
+    required this.scrollController,
   });
 
   final ArchiveCore archiveCore;
-
+  final SwiperController swiperController;
+  final ScrollController scrollController;
   @override
   State<_Temp> createState() => _TempState();
 }
@@ -75,9 +86,7 @@ class _TempState extends State<_Temp> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    SwiperController swiperController = SwiperController();
-    ScrollController scrollController = ScrollController();
-    int keyCount = 0;
+
     Core core = widget.archiveCore.core;
 
     updateState({VoidCallback? callback}) {
@@ -117,23 +126,15 @@ class _TempState extends State<_Temp> {
       );
     }
 
-    return RawKeyboardListener(
-      focusNode: FocusNode(),
-      autofocus: true,
-      onKey: (value) {
-        if (!value.repeat) {
-          keyCount++;
-          if (keyCount == 2) {
-            keyCount = 0;
-            if (value.logicalKey.keyLabel == 'D') {
-              swiperController.next();
-            }
-            if (value.logicalKey.keyLabel == 'A') {
-              swiperController.previous();
-            }
-          }
-        }
-      },
+    return KeyboardWidget(
+      bindings: [
+        KeyAction(LogicalKeyboardKey.keyD, 'Следущий вопрос', () {
+          widget.swiperController.next();
+        }),
+        KeyAction(LogicalKeyboardKey.keyA, 'Предыдущий вопрос', () {
+          widget.swiperController.previous();
+        }),
+      ],
       child: Scaffold(
         appBar: AppBar(
           title: Text(core.quizTitle),
@@ -155,8 +156,8 @@ class _TempState extends State<_Temp> {
         bottomNavigationBar: BottomNavigation(
           size: size,
           core: core,
-          swiperController: swiperController,
-          scrollController: scrollController,
+          swiperController: widget.swiperController,
+          scrollController: widget.scrollController,
         ),
         body: WillPopScope(
           onWillPop: () {
@@ -166,14 +167,14 @@ class _TempState extends State<_Temp> {
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
             child: Swiper(
               curve: Curves.ease,
-              controller: swiperController,
+              controller: widget.swiperController,
               itemCount: core.txJson.questions.length,
               itemBuilder: (context, index) => QuestionBody(
                 question: core.txJson.questions[index],
                 index: index,
                 length: core.txJson.questions.length,
-                swiperController: swiperController,
-                scrollController: scrollController,
+                swiperController: widget.swiperController,
+                scrollController: widget.scrollController,
                 core: core,
                 updateState: updateState,
               ),

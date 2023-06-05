@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:testerx/components/start_test_button.dart';
+import 'package:responsive_framework/responsive_framework.dart';
+import 'package:testerx/pages/home/ui/start_test_button.dart';
 import 'package:testerx/hive/BoxNames.dart';
 import 'package:testerx/models/index.dart';
 
@@ -13,8 +14,9 @@ class Footer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     var settingsBox = Hive.box(BoxNames.settingsBox);
-    startTest() {
+    startTest() async {
       getFile().then((value) {
         if (value == null) return;
 
@@ -36,7 +38,11 @@ class Footer extends StatelessWidget {
     return SizedBox(
       height: 120,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+        padding: EdgeInsets.symmetric(
+            horizontal: (ResponsiveBreakpoints.of(context).largerThan(MOBILE))
+                ? size.width * 0.1
+                : 40,
+            vertical: 20),
         child: Center(
           child: BottomButton(
             onPressed: startTest,
