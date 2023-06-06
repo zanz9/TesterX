@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'package:testerx/colors.dart';
 import 'package:testerx/models/index.dart';
 
 class LastTestContainer extends StatelessWidget {
@@ -18,11 +20,11 @@ class LastTestContainer extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(66, 52, 52, 52),
+        color: containerBGColor,
         borderRadius: BorderRadius.circular(10),
         boxShadow: const [
           BoxShadow(
-            color: Colors.black26,
+            color: containerBGShadowColor,
             spreadRadius: 3,
             blurRadius: 7,
             offset: Offset(0, 3), // changes position of shadow
@@ -41,9 +43,9 @@ class LastTestContainer extends StatelessWidget {
                   width: 50,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.green,
+                    color: rightColor,
                     boxShadow: const [
-                      BoxShadow(color: Colors.green, spreadRadius: 3),
+                      BoxShadow(color: rightColor, spreadRadius: 3),
                     ],
                   ),
                   child: Center(

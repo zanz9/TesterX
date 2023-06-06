@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:testerx/colors.dart';
 import 'package:testerx/hive/BoxNames.dart';
 
 import 'package:testerx/models/index.dart';
@@ -53,14 +54,11 @@ class _AnswerButtonState extends State<AnswerButton> {
         );
         Color background;
         if (isRight == EIsRight.blank) {
-          // background = Color.fromARGB(255, 141, 141, 141);
           background = Colors.transparent;
-        } else if (isRight == EIsRight.correct) {
-          background = Colors.green[300]!;
         } else if (isRight == EIsRight.wrong) {
-          background = Colors.redAccent;
+          background = wrongColor;
         } else {
-          background = Colors.green;
+          background = rightColor;
         }
 
         return AnimatedContainer(

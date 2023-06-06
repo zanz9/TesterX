@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:testerx/colors.dart';
 import 'package:testerx/hive/BoxNames.dart';
 
 import 'ui/settings_icon.dart';
@@ -34,16 +35,16 @@ class _HeaderState extends State<Header> {
             IconButton(
               icon: Image.asset(
                 'assets/icon/max.png',
-                color: !maxMode ? Colors.white : Colors.orange,
+                color: !maxMode ? Colors.white : primaryColor,
+                height: 20,
               ),
               onPressed: () {
                 setState(() {
                   settingsBox.put('maxMode', !maxMode);
-                  // settingsBox.clear();
                 });
               },
             ),
-            const SizedBox(width: 15),
+            const SizedBox(width: 10),
             IconButton(
               onPressed: () => {
                 Navigator.of(context).pushReplacementNamed('/settings'),

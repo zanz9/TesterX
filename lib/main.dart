@@ -5,6 +5,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 import 'package:testerx/hive/initial.dart';
 
+import 'colors.dart';
 import 'pages/index.dart';
 
 void main() async {
@@ -22,14 +23,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
-        primaryColor: Colors.orange,
-        primarySwatch: Colors.orange,
+        primarySwatch: primaryColor,
         scaffoldBackgroundColor: const Color.fromARGB(255, 20, 20, 20),
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
-          actionsIconTheme: const IconThemeData(color: Colors.orange),
-          iconTheme: const IconThemeData(color: Colors.orange),
-          foregroundColor: Colors.orange[200],
+          actionsIconTheme: IconThemeData(color: primaryColor),
+          iconTheme: IconThemeData(color: primaryColor),
+          foregroundColor: primaryColor,
         ),
       ),
       themeMode: ThemeMode.dark,
