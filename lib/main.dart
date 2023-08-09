@@ -4,9 +4,9 @@ import 'package:flutter/gestures.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import 'package:testerx/hive/initial.dart';
+import 'package:testerx/router.dart';
 
 import 'colors.dart';
-import 'pages/index.dart';
 
 void main() async {
   await hiveInitial();
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(),
       darkTheme: ThemeData(
@@ -33,11 +33,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       themeMode: ThemeMode.dark,
-      routes: {
-        '/': (context) => const Home(),
-        '/test': (context) => const TestPage(),
-        '/settings': (context) => const SettingsPage(),
-      },
+      routerConfig: router,
       scrollBehavior: MyCustomScrollBehavior(),
       builder: (context, child) => ResponsiveBreakpoints.builder(
         child: child!,
