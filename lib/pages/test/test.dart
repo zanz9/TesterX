@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:keymap/keymap.dart';
 
 import 'package:testerx/hive/BoxNames.dart';
 import 'package:testerx/models/index.dart';
+import 'package:testerx/router.dart';
 
 import 'ui/bottom_navigation.dart';
 import 'ui/question_body.dart';
@@ -70,10 +72,11 @@ class _TempState extends State<_Temp> {
                 BoxNames.coreField: core,
                 BoxNames.finishedField: false,
               });
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                '/',
-                (Route<dynamic> route) => false,
-              );
+              context.goNamed(RouterNames.home.name);
+              // Navigator.of(context).pushNamedAndRemoveUntil(
+              //   '/',
+              //   (Route<dynamic> route) => false,
+              // );
             },
             child: const Text('Выйти'),
           ),
@@ -116,8 +119,9 @@ class _TempState extends State<_Temp> {
                 var coreBox = Hive.box<ArchiveCore>('coreBox');
                 coreBox.add(widget.archiveCore);
                 await Hive.box(BoxNames.lastTestBox).clear();
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/', (Route<dynamic> route) => false);
+                context.goNamed(RouterNames.home.name);
+                // Navigator.of(context).pushNamedAndRemoveUntil(
+                //     '/', (Route<dynamic> route) => false);
               },
               child: const Text('Выйти из теста'),
             ),

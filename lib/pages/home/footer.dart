@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:testerx/pages/home/ui/start_test_button.dart';
 import 'package:testerx/hive/BoxNames.dart';
 import 'package:testerx/models/index.dart';
+import 'package:testerx/router.dart';
 
 import 'utils/get_file.dart';
 
@@ -30,8 +32,8 @@ class Footer extends StatelessWidget {
           BoxNames.coreField: core,
           BoxNames.finishedField: false,
         });
-
-        Navigator.of(context).pushReplacementNamed('/test');
+        context.goNamed(RouterNames.test.name);
+        // Navigator.of(context).pushReplacementNamed('/test');
       });
     }
 

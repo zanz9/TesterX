@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:testerx/hive/BoxNames.dart';
 import 'package:testerx/models/index.dart';
+import 'package:testerx/router.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -16,7 +18,8 @@ class SettingsPage extends StatelessWidget {
         title: const Text('Настройки'),
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pushReplacementNamed('/');
+            context.goNamed(RouterNames.home.name);
+            // Navigator.of(context).pushReplacementNamed('/');
           },
           icon: const Icon(Icons.arrow_circle_left_outlined),
         ),

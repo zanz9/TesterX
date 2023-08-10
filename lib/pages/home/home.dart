@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:testerx/hive/BoxNames.dart';
 import 'package:testerx/models/index.dart';
+import 'package:testerx/router.dart';
 
 import 'footer.dart';
 import 'header.dart';
@@ -34,6 +36,9 @@ class _HomeState extends State<Home> {
       });
     }
     return Scaffold(
+      // floatingActionButton: FloatingActionButton(onPressed: () {
+      //   context.go('/');
+      // }),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(
@@ -70,7 +75,8 @@ class _HomeState extends State<Home> {
                         icon: IconButton(
                           icon: const Icon(Icons.arrow_forward_ios),
                           onPressed: () {
-                            Navigator.of(context).pushReplacementNamed('/test');
+                            context.goNamed(RouterNames.test.name);
+                            // Navigator.of(context).pushReplacementNamed('/test');
                           },
                         ),
                       ),
@@ -107,7 +113,8 @@ class _HomeState extends State<Home> {
                           ),
                           BoxNames.finishedField: false,
                         }).then((value) {
-                          Navigator.of(context).pushReplacementNamed('/test');
+                          context.goNamed(RouterNames.test.name);
+                          // Navigator.of(context).pushReplacementNamed('/test');
                         });
                       },
                     ),

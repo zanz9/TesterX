@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:testerx/colors.dart';
 import 'package:testerx/hive/BoxNames.dart';
+import 'package:testerx/router.dart';
 
 import 'ui/settings_icon.dart';
 import 'utils/get_part_of_the_day.dart';
@@ -47,7 +49,8 @@ class _HeaderState extends State<Header> {
             const SizedBox(width: 10),
             IconButton(
               onPressed: () => {
-                Navigator.of(context).pushReplacementNamed('/settings'),
+                context.goNamed(RouterNames.settings.name)
+                // Navigator.of(context).pushReplacementNamed('/settings'),
               },
               icon: const SettingsIcon(),
             ),
